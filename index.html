@@ -5,20 +5,43 @@
         <meta charset = "utf-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src = "colors.js"></script>
-        <script src="https://apis.google.com/js/platform.js" async defer></script>
-        <meta name="google-signin-client_id" content="261124322906-chqa35nmcu107s3fuhc3ghor44jqqslu.apps.googleusercontent.com"> 
         <script>
-            function onSignIn(googleUser) {
-                var profile = googleUser.getBasicProfile();
-                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-                console.log('Name: ' + profile.getName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            function checkLoginStatus(){
+                var loginBtn = document.querySelector('#loginBtn');
+                        if (gauth.isSignedIn.get()) {
+                            loginBtn.value = 'Logout';
+                        } else {
+                            loginBtn.value = 'Login';
+                        }
+            }
+            function init(){
+                gapi.load('auth2', function() {
+                    window.gauth = gapi.auth2.init({
+                        client_id:'261124322906-chqa35nmcu107s3fuhc3ghor44jqqslu.apps.googleusercontent.com'
+                    })
+                    gauth.then(function(){
+                        checkLoginStatus();
+                    }, function(){
+
+                    })
+                });
             }
         </script>
     </head>
     <body>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <input type="button" id = "loginBtn" value="checking..." onclick="
+           if(this.value === 'Login'){
+                gauth.signIn().then(function(){
+                    console.log('gauth.signIn()');
+                    checkLoginStatus();
+                });
+           } else {
+                gauth.signOut().then(function(){
+                    console.log('gauth.signOut()');
+                    checkLoginStatus()
+                });
+           }
+        ">
         <header>     <!--간판과 같은 역할을 하는 정보의 태그-->
             <h1><a href ="#!welcome">JavaScript</a></h1>
         </header>
@@ -53,5 +76,6 @@
             })
          }); 
         </script>
+        <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
     </body>
 </html>
