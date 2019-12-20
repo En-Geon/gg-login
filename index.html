@@ -8,10 +8,14 @@
         <script>
             function checkLoginStatus(){
                 var loginBtn = document.querySelector('#loginBtn');
+                var nameTxt = document.querySelector('#name');
                         if (gauth.isSignedIn.get()) {
                             loginBtn.value = 'Logout';
+                            gauth.currentUser.get().getBasicProfile();
+                            nameTxt.innerHTML = 'Welcome <strong>' + profile.getName() + '</strong> ';
                         } else {
                             loginBtn.value = 'Login';
+                            nameTxt.innerHTML = '';
                         }
             }
             function init(){
@@ -29,7 +33,7 @@
         </script>
     </head>
     <body>
-        <input type="button" id = "loginBtn" value="checking..." onclick="
+        <span id="name"></span> <input type="button" id = "loginBtn" value="checking..." onclick="
            if(this.value === 'Login'){
                 gauth.signIn().then(function(){
                     console.log('gauth.signIn()');
