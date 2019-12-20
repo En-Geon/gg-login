@@ -11,7 +11,7 @@
                 var nameTxt = document.querySelector('#name');
                         if (gauth.isSignedIn.get()) {
                             loginBtn.value = 'Logout';
-                            gauth.currentUser.get().getBasicProfile();
+                            var profile = gauth.currentUser.get().getBasicProfile();
                             nameTxt.innerHTML = 'Welcome <strong>' + profile.getName() + '</strong> ';
                         } else {
                             loginBtn.value = 'Login';
