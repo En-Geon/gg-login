@@ -5,62 +5,20 @@
         <meta charset = "utf-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src = "colors.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <meta name="google-signin-client_id" content="261124322906-chqa35nmcu107s3fuhc3ghor44jqqslu.apps.googleusercontent.com"> 
         <script>
-            
-            var checkLoginStatus = function(response){
-                    console.log(response);
-                    //statusChangeCallback(response);
-                    if(response.status === 'connected'){
-                        document.querySelector('#authBtn').value = 'Logout';
-                        FB.api('/me',function (resp) {
-                            document.querySelector('#name').innerHTML = 'Welcome ' + resp.name;
-                        }
-                        );
-                    } else {
-                        document.querySelector('#authBtn').value = 'Login';
-                        document.querySelector('#name').innerHTML = '';
-                    }
-                }
-
-            window.fbAsyncInit = function() {
-                FB.init({
-                  appId      : '2637260176340763',
-                  cookie     : true,                     // Enable cookies to allow the server to access the session.
-                  xfbml      : true,                     // Parse social plugins on this webpage.
-                  version    : 'v5.0'           // Use this Graph API version for this call.
-                });
-            
-                
-                FB.getLoginStatus(checkLoginStatus); /*{   // Called after the JS SDK has been initialized.
-                          // Returns the login status.
-                });*/
-            };
-    
-            (function(d, s, id) {                      // Load the SDK asynchronously
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>        
+            function onSignIn(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+        </script>
     </head>
     <body>
-        <input type="button" id="authBtn" value="checking..." onclick="
-            if(this.value === 'Login'){
-                // now Logout
-                FB.login(function(res){
-                    console.log('login =>', res);
-                    checkLoginStatus(res);
-                });
-            } else {
-                // now Login
-                FB.logout(function(res){
-                    console.log('logout =>',res);
-                    checkLoginStatus(res);
-                });
-            }
-        "> <span id="name"></span>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
         <header>     <!--간판과 같은 역할을 하는 정보의 태그-->
             <h1><a href ="#!welcome">JavaScript</a></h1>
         </header>
